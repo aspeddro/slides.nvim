@@ -2,7 +2,7 @@
 
 [Slides](https://github.com/maaslalani/slides) presentation in your Neovim.
 
-![image](https://user-images.githubusercontent.com/16160544/135352877-f5ade9cd-b02b-4796-860a-95477ef49fb2.png)
+![image](https://user-images.githubusercontent.com/16160544/135359624-a4772255-0fe7-4c3d-ba94-faa79ef66bce.png)
 
 ## Prerequisites
 
