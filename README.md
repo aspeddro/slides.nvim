@@ -2,6 +2,7 @@
 
 [Slides](https://github.com/maaslalani/slides) presentation in your Neovim.
 
+![image](https://user-images.githubusercontent.com/16160544/135352877-f5ade9cd-b02b-4796-860a-95477ef49fb2.png)
 
 ## Prerequisites
 
@@ -31,7 +32,7 @@ require'slides'.setup{
 
 ## Usage
 
-Open current buffer
+Open current file
 
 ```
 :Slides
@@ -48,4 +49,4 @@ Create a mapping:
 vim.api.nvim_set_keymap('n', "<leader>s", ":Slides<CR>", {silent = true, noremap = true})
 ```
 
-use `q` and `ctrl + c` to close slide
+use `q` or `ctrl + c` to close slide
