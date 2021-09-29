@@ -5,7 +5,8 @@ local state = {
 }
 
 local config = {
-  bin = 'slides'
+  bin = 'slides',
+  fullscreen = true
 }
 
 function M.close()
@@ -21,11 +22,14 @@ function M.setup(user_config)
 end
 
 function M.show(file)
+
+  local window = vim.api.nvim_get_current_win()
+
   local opts = {
     style = "minimal",
     relative = "editor",
-    width = vim.api.nvim_get_option("columns"),
-    height = vim.api.nvim_get_option("lines"),
+    width = config.fullscreen and vim.api.nvim_get_option("columns") or vim.api.nvim_win_get_width(window),
+    height = config.fullscreen and vim.api.nvim_get_option("lines") or vim.api.nvim_win_get_height(window),
     row = 1,
     col = 1,
     border = "shadow",
