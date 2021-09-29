@@ -25,8 +25,10 @@ use {
 ## Configuration
 
 ```lua
+-- default config
 require'slides'.setup{
-  bin = 'slides' -- default config, path to binary
+  bin = 'slides' -- path to binary
+  fullscreen = true -- open in fullscreen
 }
 ```
 
