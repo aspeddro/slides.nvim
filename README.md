@@ -11,7 +11,7 @@
 
 ## Installation
 
-### [packer.nvim](https://github.com/wbthomason/packer.nvim)
+#### [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
 ```lua
 use {
@@ -20,6 +20,21 @@ use {
     require'slides'.setup{}
   end
 }
+```
+
+#### [paq-nvim](https://github.com/savq/paq-nvim)
+
+```lua
+require "paq" {
+  'aspeddro/slides.nvim';
+}
+require'slides'.setup{}
+```
+
+#### [vim-plug](https://github.com/junegunn/vim-plug)
+
+```lua
+Plug 'aspeddro/slides.nvim'
 ```
 
 ## Configuration

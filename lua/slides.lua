@@ -6,7 +6,7 @@ local state = {
 
 local config = {
   bin = 'slides',
-  fullscreen = true
+  fullscreen = false
 }
 
 function M.close()
@@ -23,21 +23,29 @@ end
 
 function M.show(file)
 
-  local window = vim.api.nvim_get_current_win()
+  -- local col = vim.api.nvim_get_option('columns')
+  -- local lin = vim.api.nvim_get_option('lines')
+
+  local pos = vim.api.nvim_win_get_position(0)
+  local line = pos[1]
+  local col = pos[2]
 
   local opts = {
-    style = "minimal",
-    relative = "editor",
-    width = config.fullscreen and vim.api.nvim_get_option("columns") or vim.api.nvim_win_get_width(window),
-    height = config.fullscreen and vim.api.nvim_get_option("lines") or vim.api.nvim_win_get_height(window),
-    row = 1,
-    col = 1,
-    border = "shadow",
+    style = 'minimal',
+    relative = 'win',
+    focusable = true,
+    width = vim.api.nvim_win_get_width(0),
+    height = vim.api.nvim_win_get_height(0),
+    row = 0,
+    col = 0,
+    border = 'none',
+    zindex = 400
   }
 
-  local input = string.len(file) == 0 and vim.api.nvim_get_current_buf() or file
-  local is_file = type(input) == 'string'
-  local filetype = is_file and vim.fn.fnamemodify(input, ':e'):gsub("\"", "") or vim.api.nvim_buf_get_option(input, 'filetype')
+  local is_file = type(file) == 'string' and file:len() > 0
+  local filetype = is_file and vim.fn.fnamemodify(file, ':e'):gsub('\"', '') or vim.api.nvim_buf_get_option(0, 'filetype')
+
+  local input = is_file and file:gsub('\"', '') or vim.api.nvim_buf_get_name(0)
 
   if not vim.tbl_contains({'md', 'markdown'}, filetype) then
     vim.api.nvim_err_writeln('Invalid filetype')
@@ -49,19 +57,32 @@ function M.show(file)
     return
   end
 
+
   local bufnr = vim.api.nvim_create_buf(false, true)
   local win = vim.api.nvim_open_win(bufnr, true, opts)
 
+  local winnr = vim.api.nvim_get_current_win()
+  -- vim.api.nvim_replace_termcodes(str: string, from_part: boolean, do_lt: boolean, special: boolean)
+  if not config.fullscreen then
+    -- local win = vim.api.nvim_win_set_buf(vim.api.nvim_get_current_win(), bufnr)
+    -- vim.api.nvim_win_set_option(winnr, 'number', false)
+    -- vim.api.nvim_win_set_option(winnr, 'relativenumber', false)
+  end
+
   state.win = win
 
-  vim.cmd('startinsert!')
+  vim.cmd [[augroup slides]]
+  vim.cmd [[autocmd!]]
+  -- vim.cmd [[autocmd BufWinEnter,WinEnter,BufEnter term://* startinsert!]]
+  vim.cmd(string.format('autocmd BufEnter <buffer=%d> startinsert', bufnr))
+  vim.cmd [[augroup END]]
 
-  vim.fn.termopen(config.bin .. ' ' .. (is_file and input or vim.api.nvim_buf_get_name(input)), {
+  vim.fn.termopen(config.bin .. ' ' .. input, {
     on_exit = function()
       M.close()
     end
   })
-
+  vim.cmd('startinsert!')
 end
 
 return M
